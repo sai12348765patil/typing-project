@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="mainBox">
+
+        <div class="heading">
+            <h1>Welcome To Typing Meter Test</h1>
+            <h2 id="msg"></h2>
+            <textarea id="inputwords" cols="100" rows="10" placeholder="write here"></textarea>
+            <button id="btn">Start</button>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    const wordsSet = ["saiprasad" , "ganeshrao" ,"khansole"];
+
+    let msg = document.getElementById("msg");
+
+    let mywords = document.getElementById("inputwords");
+
+    let button = document.getElementById("btn");
+
+    let starttime , endtime;
+
+
+    const playGame = ()=>{
+        let randomNumber = Math.floor(Math.random()*wordsSet.length);
+        msg.innerText = wordsSet[randomNumber];
+
+        let date = new Date();
+
+        starttime = date.getTime();
+
+        button.innerText = "DONE";
+    }
+
+    const endGame = ()=>{
+        let date = new Date();
+
+        endtime = date.getTime();
+
+        let totaltime = ((endtime-starttime)/1000);
+
+        console.log(totaltime);
+
+
+        let userwriting = mywords.value;
+
+        let checking = wordcount(userwriting);
+
+        let speed = Math.round((checking/totaltime)*60);
+        
+        let finalmassage = `your speed is ${speed} words per minites . ` ;
+
+       finalmassage += compare(msg.innerText , userwriting);
+
+       msg.innerText = finalmassage;
+    }
+
+
+ function compare(input , userwrite){
+    let str1 = input.split(" ");
+    let str2 = userwrite.split(" ");
+    let count = 0;
+
+    str1.forEach ((e , i)=>{
+        if(e == str2[i]){count++};
+    })
+
+    return `${count} correct out of  ${str1.length} words and the total numbers of error are ${str1.length-count}`;
+ }
+
+
+    const wordcount = (userwriting)=>{
+
+        let responce = userwriting.split(" ").length;
+
+        console.log(responce);
+        return responce;
+      
+    }
+
+    button.addEventListener("click" , function(){
+        if(this.innerText == "Start"){
+            mywords.disabled = false;
+            playGame();
+        }
+        else if (this.innerText = "DONE"){
+            mywords.disabled = true;
+            button.innerText = "Start";
+            endGame();
+        }
+    })
+</script>
+
+<!-- 1] when user pressed start button then only active textarea else disable it or vice varsa -->
+<!-- 2]every time a new set of lines on top . whenever a start button is pressed . not a done one -->
+<!-- get the time and change the button text to done -->
+<!-- get the end time when user clicked on done button. find the total time taken. -->
+<!-- find the total words on the textarea -->
+<!-- find the speed of user and show it on top when user clicked on done -->
+<!-- then the call the compared words and find how many words are matching and how many not. display the result on top with speed -->
