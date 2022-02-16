@@ -6,13 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    #welcome{
+        color: crimson;
+        text-align: center;
+        margin-bottom: 5%;
+    }
+    #inputwords{
+       margin-left: 25%;
+       margin-bottom: 6%;
+       font-size: 23px;
+    }
+    #btn{
+        margin-left: 46%;
+        width: 10%;
+        padding: 10px;
+        background-color: antiquewhite;
+        color: crimson;
+        font-size: 25px;
+        border-radius: 20px;
+    }
+    .msg{
+        text-align: center;
+        font-size: 22px;
+        margin-bottom: 1%;
+    }
+</style>
 <body>
     <div id="mainBox">
 
         <div class="heading">
-            <h1>Welcome To Typing Meter Test</h1>
-            <h2 id="msg"></h2>
-            <textarea id="inputwords" cols="100" rows="10" placeholder="write here"></textarea>
+            <h1 id="welcome">Welcome To Typing Meter Test</h1>
+            <h2 class="msg" id="msg"></h2>
+            <br>
+            <h2 class="msg" id="result"></h2>
+            <textarea id="inputwords" cols="60" rows="7" placeholder="write here"></textarea>
+            <br>
             <button id="btn">Start</button>
         </div>
     </div>
@@ -20,15 +49,73 @@
 </html>
 
 <script>
-    const wordsSet = ["saiprasad" , "ganeshrao" ,"khansole"];
+    const wordsSet = ["The quick brown fox jumps over the lazy dog" ,
+                       "Please take your dog, Cali, out for a walk – he really needs some exercise!" ,
+                       "What a beautiful day it is on the beach, here in beautiful and sunny Hawaii.",
+                       "Rex Quinfrey, a renowned scientist, created plans for an invisibility machine.",
+                       "Do you know why all those chemicals are so hazardous to the environment?",
+                       "You never did tell me how many copper pennies where in that jar; how come?",
+                       "Max Joykner sneakily drove his car around every corner looking for his dog.",
+                       "The two boys collected twigs outside, for over an hour, in the freezing cold!",
+                       "When do you think they will get back from their adventure in Cairo, Egypt?",
+                       "Trixie and Veronica, our two cats, just love to play with their pink ball of yarn.",
+                       "We climbed to the top of the mountain in just under two hours; isn’t that great?",
+                       "Hector quizzed Mr. Vexife for two hours, but he was unable to get any information.",
+                       "I have three things to do today: wash my car, call my mother, and feed my dog.",
+                       "Xavier Puvre counted eighty large boxes and sixteen small boxes stacked outside.",
+                       "The Reckson family decided to go to an amusement park on Wednesday.",
+                       "That herd of bison seems to be moving quickly; does that seem normal to you?",
+                       "All the grandfather clocks in that store were set at exactly 3 o’clock.",
+                       "There are so many places to go in Europe for a vacation--Paris, Rome, Prague, etc.",
+                       "Those diamonds and rubies will make a beautiful piece of jewelry.",
+                       "The steamboats seemed to float down the Mississippi River at a snail’s pace.",
+                       "In order to keep up at that pace, Zack Squeve would have to work all night.",
+                       "A good way to increase your typing speed is to type easy sentences over and over.",
+                       "Try taking a typing speed test before and after to see for yourself.",
+                       "You can even work through this section multiple times and then track your progress.",
+                       "Do I look like a turnip that just fell off the turnip truck?",
+                       "The stronger the breeze the stronger the trees.",
+                       "You can lead a horse to water but you can't make him drink.",
+                       "Your car is out of date as soon as it is paid for.",
+                       "Establish what you wish to accomplish when writing the letter. Think about your reader’s needs as well.",
+                       "Jot down a list of the points you wish to cover in the letter",
+                       "Read over the first draft and make revisions until you feel it is good.",
+                       "Proofread several times, checking for spelling and grammatical errors.  Don’t rely solely upon your computer’s Spell Check program.  Computers don’t understand context or homophones.",
+                       "So that we can promptly refund your money, please enclose a receipt."
+                       ];
 
     let msg = document.getElementById("msg");
 
     let mywords = document.getElementById("inputwords");
 
     let button = document.getElementById("btn");
+    let result = document.getElementById("result");
 
     let starttime , endtime;
+
+
+
+ button.addEventListener("click" , function(){
+        if(this.innerText == "Start"){
+            mywords.value = "";
+            result.innerText = "" ;
+            // mywords.disabled = false;
+            playGame();
+            button.innerText = "DONE";
+        }
+        else if (this.innerText = "DONE"){
+            endGame();
+            // mywords.disabled = true;
+            button.innerText = "Start";
+        }
+    })
+
+    button.addEventListener("keypress" , function(e){
+     if(e.which = "Enter"){
+        button.click();
+     }
+    })
+
 
 
     const playGame = ()=>{
@@ -42,6 +129,8 @@
         button.innerText = "DONE";
     }
 
+
+
     const endGame = ()=>{
         let date = new Date();
 
@@ -54,51 +143,35 @@
 
         let userwriting = mywords.value;
 
-        let checking = wordcount(userwriting);
+        let checking = userwriting.split(" ").length;
 
         let speed = Math.round((checking/totaltime)*60);
         
-        let finalmassage = `your speed is ${speed} words per minites . ` ;
+        let finalmassage = ` you take ${totaltime} sec , your speed is ${speed} words per minites . ` ;
 
        finalmassage += compare(msg.innerText , userwriting);
 
-       msg.innerText = finalmassage;
+       result.innerText = finalmassage;
     }
 
 
- function compare(input , userwrite){
+function compare(input , userwrite){
     let str1 = input.split(" ");
     let str2 = userwrite.split(" ");
     let count = 0;
 
     str1.forEach ((e , i)=>{
-        if(e == str2[i]){count++};
+        if(e == str2[i]){
+            count++;
+            }
     })
 
     return `${count} correct out of  ${str1.length} words and the total numbers of error are ${str1.length-count}`;
  }
 
 
-    const wordcount = (userwriting)=>{
 
-        let responce = userwriting.split(" ").length;
-
-        console.log(responce);
-        return responce;
-      
-    }
-
-    button.addEventListener("click" , function(){
-        if(this.innerText == "Start"){
-            mywords.disabled = false;
-            playGame();
-        }
-        else if (this.innerText = "DONE"){
-            mywords.disabled = true;
-            button.innerText = "Start";
-            endGame();
-        }
-    })
+   
 </script>
 
 <!-- 1] when user pressed start button then only active textarea else disable it or vice varsa -->
